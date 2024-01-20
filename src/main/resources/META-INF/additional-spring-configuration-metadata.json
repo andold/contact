@@ -1,0 +1,17 @@
+{"properties": [
+  {
+    "name": "spring.http.multipart.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.http.multipart.enabled'"
+  },
+  {
+    "name": "data.path",
+    "type": "java.lang.String",
+    "description": "some data path'"
+  },
+  {
+    "name": "data.webdriver.chrome.driver",
+    "type": "java.lang.String",
+    "description": "A description for 'data.webdriver.chrome.driver'"
+  }
+]}

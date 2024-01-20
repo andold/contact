@@ -1,0 +1,125 @@
+buildscript {
+	repositories {
+		maven {
+			url "https://plugins.gradle.org/m2/"
+		}
+	}
+	dependencies {
+		classpath "org.springframework.boot:spring-boot-gradle-plugin:3.0.1"
+	}
+}
+
+plugins {
+	id "io.spring.dependency-management" version "1.0.11.RELEASE"
+	id "com.github.node-gradle.node" version "3.5.0"
+	id "java"
+	id "war"
+}
+
+ext {
+	springBootVersion = "3.2.0"
+	lombokVersion = "1.18.24"
+}
+
+apply plugin: "org.springframework.boot"
+apply plugin: "com.github.node-gradle.node"
+
+war.enabled = true
+
+group = "kr.andold.contact"
+version = "0.0.1-SNAPSHOT"
+
+//sourceCompatibility = "18"
+//targetCompatibility = "18"
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation("org.jsoup:jsoup:1.15.3")
+	implementation("com.h2database:h2:2.1.212")
+	implementation("org.hibernate:hibernate-jpamodelgen:6.1.7.Final")
+	implementation("org.springframework.boot:spring-boot:${springBootVersion}")
+	implementation("org.springframework.boot:spring-boot-starter-jdbc")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.springframework.boot:spring-boot-starter-validation")
+	implementation("org.springframework.boot:spring-boot-starter-web")
+	implementation("org.springframework.boot:spring-boot-starter-websocket")
+	providedRuntime("org.springframework.boot:spring-boot-starter-tomcat")
+ 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+ 
+	implementation("javax.validation:validation-api:2.0.1.Final")
+
+	implementation("com.googlecode.ez-vcard:ez-vcard:0.12.0")
+	
+	compileOnly("org.projectlombok:lombok:${lombokVersion}")
+	annotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+	testImplementation("org.projectlombok:lombok:${lombokVersion}")
+	testAnnotationProcessor("org.projectlombok:lombok:${lombokVersion}")
+
+	implementation("javax.xml.bind:jaxb-api:2.2.11")
+	implementation("org.antlr:antlr4:4.10.1")
+
+	testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.3")
+	testImplementation("org.junit.jupiter:junit-jupiter-engine:5.9.3")
+
+}
+
+test {
+	useJUnitPlatform()
+}
+
+def webappDir = "$projectDir/src/main/frontend"
+
+println "projectDir: $projectDir"
+println "webappDir: $webappDir"
+
+if (project.hasProperty("profile")) {
+	println "profile: ${profile}"
+	sourceSets {
+		main {
+			resources {
+				srcDirs = ["src/main/resources", "src/main/resources-${profile}"]
+			}
+		}
+	}
+} else {
+	println "profile: null. maybe test environment."
+	sourceSets {
+		main {
+			resources {
+				srcDirs = ["src/main/resources", "src/test/resources", "src/test/resources-home"]
+			}
+		}
+	}
+}
+
+processResources {
+    dependsOn "copyWebApp"
+}
+task copyWebApp(type: Copy) {
+	println "copyWebApp: from($webappDir/build) into($projectDir/src/main/resources/static)."
+	dependsOn "buildAdmin"
+	from "$webappDir/build"
+	into "$projectDir/src/main/resources/static"
+}
+/*
+compileJava.dependsOn copyWebApp
+*/
+
+node {
+	version = "19.1.0"
+	npmVersion = "9.1.2"
+	download = true
+	nodeProjectDir = file("$webappDir")
+}
+
+task buildAdmin(type: NpmTask) {
+	inputs.dir("$webappDir/src")
+    args = ["run", "build"]
+}
+
+rootProject.tasks.named("processResources") {
+	duplicatesStrategy = "include"
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE configuration>
+<configuration debug="true" scan="true" scanPeriod="30 seconds">
+	<property name="LOG_PATH" value="E:/logs/test-contact" />
+	<statusListener class="ch.qos.logback.core.status.NopStatusListener" />
+
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<charset>UTF-8</charset>
+			<Pattern>TH %d{HH:mm:ss} [%-5level] %-32.32logger{32} :%4line %msg%n</Pattern>
+		</encoder>
+	</appender>
+	<appender name="general" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${LOG_PATH}/general.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${LOG_PATH}/general.log.%i</fileNamePattern>
+			<maxIndex>9</maxIndex>
+		</rollingPolicy>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>4MB</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<charset>UTF-8</charset>
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5level] %-64.64logger{64} :%4line %msg%n</Pattern>
+		</encoder>
+	</appender>
+	<appender name="contact" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<File>${LOG_PATH}/contact.log</File>
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<fileNamePattern>${LOG_PATH}/household.log.%i</fileNamePattern>
+			<maxIndex>9</maxIndex>
+		</rollingPolicy>
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<maxFileSize>4MB</maxFileSize>
+		</triggeringPolicy>
+		<encoder>
+			<charset>UTF-8</charset>
+			<Pattern>%d{yyyy-MM-dd HH:mm:ss} [%-5level] %-32.32logger{32} :%4line %msg%n</Pattern>
+		</encoder>
+	</appender>
+
+	<logger name="org.hibernate" additivity="false" level="warn">
+		<appender-ref ref="console" />
+		<appender-ref ref="contact" />
+	</logger>
+	<logger name="kr.andold.household.antlr4v2" additivity="false" level="info">
+		<appender-ref ref="console" />
+		<appender-ref ref="chatclient" />
+	</logger>
+	<logger name="kr.andold.household.controller" additivity="false" level="info">
+		<appender-ref ref="console" />
+		<appender-ref ref="household" />
+		<appender-ref ref="chatclient" />
+	</logger>
+	<logger name="kr.andold.household.ics" additivity="false" level="info">
+		<appender-ref ref="console" />
+		<appender-ref ref="household" />
+		<appender-ref ref="chatclient" />
+	</logger>
+	<logger name="kr.andold.household.service" additivity="false" level="debug">
+		<appender-ref ref="console" />
+		<appender-ref ref="chatclient" />
+	</logger>
+	<logger name="kr.andold.household.webchat" additivity="false" level="debug">
+		<appender-ref ref="webchat" />
+	</logger>
+
+	<logger name="kr.andold.household" additivity="false" level="debug">
+		<appender-ref ref="console" />
+		<appender-ref ref="household" />
+	</logger>
+
+	<logger name="org.springframework" additivity="false" level="warn">
+		<appender-ref ref="console" />
+		<appender-ref ref="general" />
+	</logger>
+
+	<root level="info">
+		<appender-ref ref="console" />
+		<appender-ref ref="general" />
+	</root>
+
+</configuration>

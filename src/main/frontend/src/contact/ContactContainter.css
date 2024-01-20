@@ -1,0 +1,6 @@
+/*Chrome*/
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+	input[type='range']::-webkit-slider-thumb {
+		background: rgb(0, 128, 64);
+	}
+}

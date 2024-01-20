@@ -1,0 +1,18 @@
+{
+	"compilerOptions": {
+		"outDir": "./build",
+		"rootDir": "./src",
+
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"forceConsistentCasingInFileNames": true,
+		"esModuleInterop": true,
+		"lib": ["dom", "ES2016"],
+		"jsx": "react",
+		"module": "es6",
+		"noImplicitAny": false,
+		"target": "es6",
+		"allowJs": true,
+		"moduleResolution": "node"
+	}
+}

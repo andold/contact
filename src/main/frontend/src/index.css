@@ -1,0 +1,31 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.owner-producer	{
+	margin-left: -3px;
+	margin-top: 6px;
+	width: 4px;
+	height: 4px;
+	position: absolute;
+	z-index: 1;
+	background-color: white;
+}
+.owner-producer-권과헌-국민은행	{	background-color: Crimson;	}
+.owner-producer-권과헌-신한은행, .owner-producer-권과헌-네이버	{	background-color: red;	}
+.owner-producer-권과헌-현대카드	{	background-color: brown;	}
+.owner-producer-박영선-하나은행	{	background-color: green;	}
+.owner-producer-박영선-하나카드	{	background-color: aquamarine;	}
+
+.mytooltip > .tooltip-inner {
+  max-width: 100%;
+}
