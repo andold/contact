@@ -5,9 +5,9 @@ buildscript {
 		}
 	}
 	dependencies {
-		classpath "org.springframework.boot:spring-boot-gradle-plugin:3.0.1"
 		classpath("io.spring.gradle:dependency-management-plugin:1.1.4")
 		classpath("com.github.node-gradle:gradle-node-plugin:7.0.2")
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:3.2.2")
 	}
 }
 
