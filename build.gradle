@@ -23,6 +23,7 @@ ext {
 
 apply plugin: "org.springframework.boot"
 apply plugin: "com.github.node-gradle.node"
+apply plugin: "org.springframework.boot.gradle.plugin.SpringBootPlugin"
 
 war.enabled = true
 
