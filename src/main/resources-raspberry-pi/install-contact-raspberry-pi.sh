@@ -76,7 +76,7 @@ git config --global core.quotepath false
 #
 cd	$SOURCE_DIR
 git stash
-git pull https://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@github.com/andold/contact.git
+git pull ssh://git@ssh.github.com:443/andold/contact.git
 git		log --pretty=format:"%h - %an, %ai:%ar : %s" -8
 #
 #
