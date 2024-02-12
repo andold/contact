@@ -4,8 +4,6 @@ import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 
-import org.hibernate.annotations.NotFound;
-import org.hibernate.annotations.NotFoundAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -58,7 +56,6 @@ public class ContactEntity {
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "vcard_id")
-	@NotFound(action = NotFoundAction.IGNORE)
 	private List<ContactMapEntity> maps;
 
 	@Override
