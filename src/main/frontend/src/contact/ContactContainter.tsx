@@ -31,6 +31,7 @@ export default ((props: any) => {
 
 		map: new Map(),
 	});
+	const [updating, setUpdating] = useState<ContactModel>(null);
 	const [modes, setModes] = useState([]);
 
 	useEffect(() => {
@@ -38,19 +39,27 @@ export default ((props: any) => {
 			<ModeZero
 				form={form}
 				onChange={(params: any) => setForm({ ...form, ...params, })}
+				doUpdate={doUpdate}
 			/>,
 			<ModeTwo
 				form={form}
 				onChange={(params: any) => setForm({ ...form, ...params, })}
+				doUpdate={doUpdate}
 			/>,
 		]);
 	}, [form]);
 
+	function doUpdate(contact: ContactModel) {
+		setUpdating(contact);
+	}
 	function handleOnUpdate(contact: any) {
 		store.update(contact, (request: any, updated: ContactModel) => {
 			console.log(request, updated);
-			setForm({ ...form, updating: null, });
+			//setForm({ ...form, updating: null, });
 		});
+	}
+	function handleOnClose() {
+		//setForm({ ...form, updating: null, });
 	}
 
 	return (<>
@@ -68,8 +77,8 @@ export default ((props: any) => {
 			onChange={(params: any) => setForm({ ...form, ...params, })}
 		/>
 		<UpdateModal
-			contact={form.updating}
-			onClose={() => setForm({ ...form, updating: null, })}
+			contact={updating}
+			onClose={handleOnClose}
 			onUpdate={handleOnUpdate}
 			form={form}
 			onChange={(params: any) => setForm({ ...form, ...params, })}
@@ -79,7 +88,7 @@ export default ((props: any) => {
 
 function ModeTwo(props: any) {
 	const form = props.form as ContactForm;
-	const { onChange } = props;
+	const { onChange, doUpdate } = props;
 
 	const [contacts, setContacts] = useState<ContactModel[]>([]);
 
@@ -102,6 +111,7 @@ function ModeTwo(props: any) {
 					contact={contact}
 					form={form}
 					onChange={onChange}
+					doUpdate={doUpdate}
 				/>
 			))
 		}</Row>

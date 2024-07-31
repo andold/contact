@@ -1,4 +1,4 @@
-package kr.andold;
+package kr.andold.contact;
 
 import java.util.TimeZone;
 

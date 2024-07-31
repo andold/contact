@@ -7,9 +7,9 @@ import AppStore from "../AppStore";
 // domain
 import ContactForm from "./ContactForm";
 import ContactModel, { ContactMapModel } from "./ContactModel";
-import store from "./ContactStore";
 
 // store
+import store from "./ContactStore";
 
 // constant
 const hides = ["version", "prodid", "x-ablabel"];
@@ -24,7 +24,7 @@ export default ((props: any) => {
 
 	const contact = props.contact as ContactModel;
 	const form = props.form as ContactForm;
-	const { index, onChange } = props;
+	const { index, onChange, doUpdate } = props;
 
 	const [map, setMap] = useState<Map<string, ContactMapModel>>(new Map<string, ContactMapModel>());
 
@@ -90,7 +90,7 @@ export default ((props: any) => {
 
 	return (<>
 		<Col xs="3" className="px-3 py-1 border-bottom text-start bg-black text-white">
-			<Badge bg={store.bgByPriority(data?.value)} className="me-1" title={JSON.stringify(contact)}>{index}</Badge>
+			<Badge bg={store.bgByPriority(data?.value)} className="me-1">{index}</Badge>
 			{contact.vcard[1].sort((a: any, b: any) => sortField(a, b)).map((child: any) => (
 				<General
 					key={Math.random()}
@@ -101,7 +101,7 @@ export default ((props: any) => {
 					onChange={onChange}
 				/>
 			))}
-			<Button size="sm" variant="outline-primary" className="mx-1 py-0" onClick={() => onChange && onChange({ updating: contact })} >
+			<Button size="sm" variant="outline-primary" className="mx-1 py-0" onClick={() => doUpdate && doUpdate(contact)} >
 				수정
 			</Button>
 		</Col>
@@ -142,7 +142,6 @@ export function Priority(props: any) {
 export function UpdateModal(props: any) {
 	const contact = props.contact as ContactModel;
 	const form = props.form as ContactForm;
-	const { onClose, onUpdate } = props;
 
 	const [refresh, setRefresh] = useState(false);
 	const [clone, setClone] = useState<ContactModel>();
@@ -165,7 +164,12 @@ export function UpdateModal(props: any) {
 
 	function handleOnClickUpdate() {
 		clone.maps = Array.from(map.values());
-		onUpdate && onUpdate(clone);
+		store.update(clone, (request: any, updated: ContactModel) => {
+			console.log(request, updated);
+			setClone(null);
+			//setForm({ ...form, updating: null, });
+		});
+//		onUpdate && onUpdate(clone);
 	}
 	function onChangeContactMapValue(key: string, value: number) {
 		let cmap: ContactMapModel = map.get(key);
@@ -191,18 +195,18 @@ export function UpdateModal(props: any) {
 	return (<>
 		<Modal show={!!clone} size="lg" centered>
 			<Modal.Header className="bg-black text-white border border-secondary">
-				<Modal.Title title={JSON.stringify(contact)}>
+				<Modal.Title>
 					<Row>
 						<Col xs="auto" className="px-1">
 							{title && title[3]}
 						</Col>
 						<Col xs="auto" className="mx-1">
 							<Button variant="primary" size="sm" className="mx-1" onClick={handleOnClickUpdate}>적용</Button>
-							<Button variant="primary" size="sm" className="mx-1" onClick={onClose}>닫기</Button>
+							<Button variant="primary" size="sm" className="mx-1" onClick={() => setClone(null)}>닫기</Button>
 						</Col>
 					</Row>
 				</Modal.Title>
-				<CloseButton className="bg-black text-white" onClick={onClose} />
+				<CloseButton className="bg-black text-white" onClick={() => setClone(null)} />
 			</Modal.Header>
 			<Modal.Body className="bg-black text-white border border-secondary">
 				<Form.Group as={Row} className="mb-3">
@@ -243,7 +247,7 @@ export function UpdateModal(props: any) {
 			</Modal.Body>
 			<Modal.Footer className="bg-black text-white border border-secondary" style={{ maxHeight: 128 }}>
 				<Button variant="primary" size="sm" onClick={handleOnClickUpdate}>적용</Button>
-				<Button variant="primary" size="sm" onClick={onClose}>닫기</Button>
+				<Button variant="primary" size="sm" onClick={() => setClone(null)}>닫기</Button>
 			</Modal.Footer>
 		</Modal>
 	</>);

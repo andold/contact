@@ -1,5 +1,8 @@
 import axios from "axios";
 
+// domain
+import ContactModel, { ContactMapModel } from "./ContactModel";
+
 // ContactRepository.ts
 class ContactRepository {
 	constructor() {
@@ -20,7 +23,7 @@ class ContactRepository {
 			.then(response => onSuccess && onSuccess(request, response.data, element))
 			.catch(error => onError && onError(request, error, element));
 	}
-	async update(request: any, onSuccess?: any, onError?: any, element?: any) {
+	async update(request: ContactModel, onSuccess?: any, onError?: any, element?: any) {
 		return axios.put("./api/" + request.id, request)
 			.then(response => onSuccess && onSuccess(request, response.data, element))
 			.catch(error => onError && onError(request, error, element));

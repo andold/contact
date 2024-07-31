@@ -2,6 +2,9 @@ import { makeAutoObservable } from "mobx";
 import moment from "moment";
 import repository from './ContactRepository';
 
+// domain
+import ContactModel, { ContactMapModel } from "./ContactModel";
+
 const cellStyleLeft = { textAlign: "left", padding: 1, };
 const cellStyleRight = { textAlign: "right", padding: 1, paddingRight: 4, };
 const cellStyleCenter = { textAlign: "center", padding: 1, };
@@ -20,7 +23,7 @@ class ContactStore {
     search(request: any, onSuccess?: any, onError?: any, element?: any) {
 		repository.search(request, onSuccess, onError, element);
     }
-	update(request: any[], onSuccess?: any, onError?: any, element?: any) {
+	update(request: ContactModel, onSuccess?: any, onError?: any, element?: any) {
 		repository.update(request, onSuccess, onError, element);
 	}
 	remove(request: any, onSuccess?: any, onError?: any, element?: any) {
